@@ -1,9 +1,10 @@
 const HDWalletProvider = require("truffle-hdwallet-provider");
 const Web3 = require("web3");
 const { interface, bytecode } = require("./compile");
+const mnemonic = require("./secrets");
 
 const provider = new HDWalletProvider(
-  "citizen embody mass sister sweet leaf ensure gorilla turn toddler law heavy",
+  mnemonic,
   "https://rinkeby.infura.io/v3/17a0907aaeff464099782644eacda9f1"
 );
 const web3 = new Web3(provider);
@@ -15,11 +16,11 @@ const deploy = async () => {
 
   const result = await new web3.eth.Contract(JSON.parse(interface))
     .deploy({
-      data: bytecode,
-      arguments: ["Hi there!"]
+      data: bytecode
     })
     .send({ gas: "1000000", from: accounts[0] });
 
+  console.log(interface);
   console.log("contract deployed to: ", result.options.address);
 };
 deploy();
